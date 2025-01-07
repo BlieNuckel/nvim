@@ -6,7 +6,7 @@
 local M = {}
 
 M.base46 = {
-  theme = "monochrome",
+  theme = "one_light",
   ui = {
     statusline = {
       theme = "vscode",

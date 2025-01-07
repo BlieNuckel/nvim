@@ -5,6 +5,13 @@ return {
     opts = require "configs.conform",
   },
   {
+    "rmagatti/auto-session",
+    lazy = false,
+    opts = {
+      suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+    },
+  },
+  {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {

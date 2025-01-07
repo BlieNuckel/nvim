@@ -4,6 +4,8 @@ local options = {
     css = { "prettier" },
     html = { "prettier" },
     cpp = { "clang_format" },
+    ts = { "eslint" },
+    js = { "eslint" },
   },
 
   format_on_save = {

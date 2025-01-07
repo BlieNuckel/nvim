@@ -21,6 +21,9 @@ return {
         "clangd", -- a powerful LSP for C++
         "clang-format",
         "typescript-language-server",
+        "css-lsp",
+        "html-lsp",
+        "eslint",
       },
     },
   },
@@ -81,6 +84,8 @@ return {
         "html",
         "css",
         "cpp",
+        "typescript",
+        "javascript",
       },
     },
   },

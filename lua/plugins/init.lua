@@ -13,6 +13,7 @@ return {
         "prettier", -- LSP and formatter for html,css
         "clangd", -- a powerful LSP for C++
         "clang-format",
+        "typescript-language-server",
       },
     },
   },
@@ -21,6 +22,9 @@ return {
     config = function()
       require "configs.lspconfig"
     end,
+  },
+  {
+    "windwp/nvim-ts-autotag",
   },
   {
     "nvim-tree/nvim-tree.lua",

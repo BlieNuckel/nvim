@@ -7,6 +7,11 @@ local lspconfig = require "lspconfig"
 local servers = { "ts_ls", "html", "cssls" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
+nvlsp.capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true,
+}
+
 -- lsps with default config
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {

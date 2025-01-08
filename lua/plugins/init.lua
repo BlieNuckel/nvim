@@ -12,6 +12,10 @@ return {
     },
   },
   {
+    "kevinhwang91/nvim-ufo",
+    dependencies = { "kevinhwang91/promise-async" },
+  },
+  {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
@@ -32,9 +36,6 @@ return {
     config = function()
       require "configs.lspconfig"
     end,
-  },
-  {
-    "windwp/nvim-ts-autotag",
   },
   {
     "nvim-tree/nvim-tree.lua",

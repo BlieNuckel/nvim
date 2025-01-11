@@ -72,6 +72,12 @@ return {
         update_focused_file = {
           enable = true,
         },
+        filters = {
+          dotfiles = false,
+        },
+        git = {
+          ignore = false,
+        },
       }
     end,
   },

@@ -12,6 +12,7 @@ o.foldlevel = 99
 o.foldlevelstart = 99
 o.foldenable = true
 o.foldmethod = "manual"
+o.wrap = false
 
 if vim.fn.has "win32" == 1 then
   o.shell = "pwsh"

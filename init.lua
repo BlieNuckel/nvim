@@ -46,6 +46,12 @@ capabilities.textDocument.foldingRange = {
   lineFoldingOnly = true,
 }
 
+vim.api.nvim_create_augroup("autoreload", { clear = true })
+vim.api.nvim_create_autocmd("CursorHold", {
+  group = "autoreload",
+  pattern = "*",
+  command = "checktime",
+})
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")

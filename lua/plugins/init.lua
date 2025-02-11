@@ -28,6 +28,7 @@ return {
         "css-lsp",
         "html-lsp",
         "eslint",
+        "rust-analyzer",
       },
     },
   },

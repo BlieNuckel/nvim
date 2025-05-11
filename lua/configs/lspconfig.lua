@@ -1,6 +1,6 @@
 require("nvchad.configs.lspconfig").defaults()
 
-local servers = { "csharp-language-server" }
+local servers = { "csharp_ls" }
 vim.lsp.enable(servers)
 
 -- read :h vim.lsp.config for changing options of lsp servers

@@ -6,6 +6,7 @@ return {
       "lua",
       "vimdoc",
       "c_sharp",
+      "go",
     },
   },
 }

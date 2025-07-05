@@ -9,6 +9,7 @@ o.scrolloff = 10
 o.autoread = true
 o.updatetime = 2000
 o.clipboard = "unnamedplus"
+o.winborder = "rounded"
 vim.wo.wrap = false
 
 vim.api.nvim_create_autocmd("CursorHold", {

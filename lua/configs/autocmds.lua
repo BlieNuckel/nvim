@@ -21,3 +21,8 @@ autocmd("LspAttach", {
     map("gm", "<CMD>Glance implementations<CR>", "Glance implementations")
   end,
 })
+
+vim.api.nvim_create_autocmd("CursorHold", {
+  pattern = "*",
+  command = "checktime",
+})

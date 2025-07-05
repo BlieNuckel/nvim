@@ -20,5 +20,16 @@ M.term = {
     border = "rounded",
   },
 }
+M.ui = {
+  statusline = {
+    order = { "mode", "f", "git", "%=", "lsp_msg", "%=", "diagnostics", "lsp", "cwd", "lineInfo" },
+    modules = {
+      lineInfo = function()
+        return "%#st_pos_icon#  %#st_pos_text# %l/%L (:%v) "
+      end,
+      f = "%f",
+    },
+  },
+}
 
 return M

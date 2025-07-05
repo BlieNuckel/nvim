@@ -9,10 +9,13 @@ o.scrolloff = 10
 o.autoread = true
 o.updatetime = 2000
 o.clipboard = "unnamedplus"
-o.winborder = "rounded"
 vim.wo.wrap = false
 
-vim.api.nvim_create_autocmd("CursorHold", {
-  pattern = "*",
-  command = "checktime",
-})
+-- LSP Hover override to get borders
+local hover = vim.lsp.buf.hover
+---@diagnostic disable-next-line: duplicate-set-field
+vim.lsp.buf.hover = function()
+  return hover {
+    border = "rounded",
+  }
+end

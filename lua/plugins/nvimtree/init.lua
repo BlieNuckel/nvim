@@ -28,7 +28,7 @@ return {
         dotfiles = false,
       },
       view = {
-        width = 25,
+        width = 35,
       },
     }
   end,

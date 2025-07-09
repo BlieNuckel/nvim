@@ -7,6 +7,7 @@ local nvimtreeConf = require "plugins.nvimtree.init"
 local glanceConf = require "plugins.glance.init"
 local blamerConf = require "plugins.blamer.init"
 local kulalaConf = require "plugins.kulala.init"
+local dapConf = require "plugins.dap.init"
 
 return {
   conformConf,
@@ -18,5 +19,6 @@ return {
   glanceConf,
   blamerConf,
   kulalaConf,
+  dapConf,
   { import = "nvchad.blink.lazyspec" },
 }

@@ -1,5 +1,7 @@
 local autocmd = vim.api.nvim_create_autocmd
 
+require "configs.autocmds.diagnostic"
+
 autocmd("TextYankPost", {
   desc = "Highlight when yanking text",
   group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),

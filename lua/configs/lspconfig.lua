@@ -1,4 +1,4 @@
-local servers = { "csharp_ls", "ts_ls", "gopls" }
+local servers = { "csharp_ls", "ts_ls", "gopls", "html", "cssls", "elmls", "eslint", "kulala_ls" }
 vim.lsp.enable(servers)
 
 vim.diagnostic.config {

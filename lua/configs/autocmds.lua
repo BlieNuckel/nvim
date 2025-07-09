@@ -35,3 +35,14 @@ autocmd("BufDelete", {
     end
   end,
 })
+
+autocmd("BufWritePre", {
+  callback = function()
+    if vim.bo.ft == "typescript" then
+      vim.lsp.buf.code_action {
+        context = { diagnostics = vim.diagnostic.get(0), only = { "source.organizeImports" } },
+        apply = true,
+      }
+    end
+  end,
+})

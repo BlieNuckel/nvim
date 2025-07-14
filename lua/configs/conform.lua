@@ -9,6 +9,7 @@ local options = {
     json = { "prettier" },
     yaml = { "prettier" },
     http = { "kulala-fmt" },
+    python = { "black" },
   },
   linters_by_ft = {
     javascript = { "eslint" },

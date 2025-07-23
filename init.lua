@@ -34,6 +34,7 @@ require "nvchad.autocmds"
 require "configs.autocmds"
 require "configs.usercmds"
 require "configs.lspconfig"
+require "configs.dap"
 
 vim.schedule(function()
   require "mappings"

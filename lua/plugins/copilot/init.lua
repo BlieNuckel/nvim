@@ -7,6 +7,8 @@ return {
     },
     build = "make tiktoken", -- Only on MacOS or Linux
     opts = {
+      tootls = "copilot",
+      resources = "buffers:all",
       sticky = {},
       mappings = {
         complete = {
@@ -20,6 +22,8 @@ return {
           insert = "",
         },
       },
+      insert_at_end = true,
+      auto_insert_mode = true,
     },
     -- See Commands section for default commands if you want to lazy load on them
     event = "VeryLazy",

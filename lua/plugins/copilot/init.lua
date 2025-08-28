@@ -24,6 +24,11 @@ return {
       },
       insert_at_end = true,
       auto_insert_mode = true,
+      prompts = {
+        TestNI = {
+          prompt = "Please generate tests for my code. Make use of node test runner and assert/strict. Name logical test groups with a 'describe' block. Use 'it' blocks for individual tests",
+        },
+      },
     },
     -- See Commands section for default commands if you want to lazy load on them
     event = "VeryLazy",

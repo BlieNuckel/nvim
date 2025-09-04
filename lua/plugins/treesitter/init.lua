@@ -7,6 +7,7 @@ return {
       "vimdoc",
       "c_sharp",
       "go",
+      "http",
     },
   },
 }

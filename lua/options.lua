@@ -7,7 +7,7 @@ local g = vim.g
 
 o.cursorlineopt = "both" -- to enable cursorline!
 o.relativenumber = true
-o.scrolloff = 10
+o.scrolloff = 5
 o.foldcolumn = "1"
 o.autoread = true
 o.updatetime = 2000

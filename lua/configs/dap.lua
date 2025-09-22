@@ -22,8 +22,8 @@ dap.configurations.javascript = {
     program = "${file}",
     cwd = vim.fn.getcwd(),
     sourceMaps = true,
-    protocol = "inspector",
     console = "integratedTerminal",
+    outputCapture = "std",
   },
   {
     type = "node2",

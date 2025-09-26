@@ -3,6 +3,7 @@ require "nvchad.mappings"
 -- add yours here
 
 local map = vim.keymap.set
+local delmap = vim.keymap.del
 local ufo = require "ufo"
 local dap = require "dap"
 local dapui = require "dapui"
@@ -30,6 +31,8 @@ end, { desc = "Debugger REPL" })
 map({ "n", "v" }, "<Leader>dh", function()
   require("dap.ui.widgets").hover()
 end, { desc = "Debugger Hover" })
+
+delmap("n", "<Tab>")
 
 -- Copilot keybindings
 map("i", "<C-c>", 'copilot#Accept("\\<CR>")', {

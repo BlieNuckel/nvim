@@ -8,4 +8,3 @@ vim.diagnostic.config {
   underline = true,
   update_in_insert = false,
 }
--- read :h vim.lsp.config for changing options of lsp servers

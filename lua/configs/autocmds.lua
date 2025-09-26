@@ -1,6 +1,6 @@
-local autocmd = vim.api.nvim_create_autocmd
-
 require "configs.autocmds.diagnostic"
+
+local autocmd = vim.api.nvim_create_autocmd
 
 autocmd("TextYankPost", {
   desc = "Highlight when yanking text",
@@ -11,16 +11,26 @@ autocmd("TextYankPost", {
 })
 
 autocmd("LspAttach", {
-  group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
-  callback = function(event)
-    local map = function(keys, func, desc)
-      vim.keymap.set("n", keys, func, { buffer = event.buf, desc = desc })
+  group = vim.api.nvim_create_augroup("MyLspGlance", { clear = true }),
+  callback = function(args)
+    local bufnr = args.buf
+    local map = function(keybinding, cmd, desc)
+      vim.keymap.set("n", keybinding, cmd, { buffer = bufnr, desc = desc })
     end
+    local del = function(keybinding)
+      pcall(vim.keymap.del, "n", keybinding, { buffer = bufnr })
+    end
+    vim.schedule(function()
+      del "gd"
+      del "gr"
+      del "gy"
+      del "gm"
 
-    map("gd", "<CMD>Glance definitions<CR>", "Glance Definition")
-    map("gr", "<CMD>Glance references<CR>", "Glance References")
-    map("gy", "<CMD>Glance type_definitions<CR>", "Glance Type Definition")
-    map("gm", "<CMD>Glance implementations<CR>", "Glance implementations")
+      map("gd", "<CMD>Glance definitions<CR>", "Glance Definitions")
+      map("gr", "<CMD>Glance references<CR>", "Glance References")
+      map("gy", "<CMD>Glance type_definitions<CR>", "Glance Type Definitions")
+      map("gm", "<CMD>Glance implementations<CR>", "Glance Implementations")
+    end)
   end,
 })
 

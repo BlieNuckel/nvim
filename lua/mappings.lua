@@ -14,14 +14,17 @@ map("n", "zR", ufo.openAllFolds)
 map("n", "zM", ufo.closeAllFolds)
 map("n", "<leader>fW", require("telescope.builtin").grep_string, { desc = "Find word under cursor" })
 
+-- Blamer toggle
+map("n", "<leader>bb", "<CMD>BlamerToggle<CR>", { desc = "Toggle Blamer" })
+
 -- Debugger keybindings
 map("n", "<leader>dc", dap.continue, { desc = "Debugger Start/Continue" })
 map("n", "<leader>dd", dap.disconnect, { desc = "Debugger Stop" })
 map("n", "<leader>do", dap.step_over, { desc = "Debugger Step Over" })
 map("n", "<leader>di", dap.step_into, { desc = "Debugger Step Into" })
 map("n", "<leader>du", dap.step_out, { desc = "Debugger Step Out" })
-map("n", "<leader>b", dap.toggle_breakpoint, { desc = "Toggle Breakpoint" })
-map("n", "<leader>B", function()
+map("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle Breakpoint" })
+map("n", "<leader>dB", function()
   dap.set_breakpoint(vim.fn.input "Breakpoint condition: ")
 end, { desc = "Toggle Cond Breakpoint" })
 map("n", "<leader>ui", dapui.toggle, { desc = "Debugger Toggle UI" })

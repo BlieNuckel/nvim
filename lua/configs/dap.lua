@@ -1,55 +1,51 @@
 local dap = require "dap"
 
--- Configure the Node.js Adapter
-dap.adapters.node2 = {
-  type = "executable",
-  command = "node",
-  args = { os.getenv "HOME" .. "/.local/share/nvim/mason/packages/node-debug2-adapter/out/src/nodeDebug.js" },
-}
-
-dap.adapters.tsx = {
-  type = "executable",
-  command = "tsx",
-  args = { os.getenv "HOME" .. "/.local/share/nvim/mason/packages/node-debug2-adapter/out/src/nodeDebug.js" },
+-- Configure js-debug-adapter
+dap.adapters["pwa-node"] = {
+  type = "server",
+  host = "localhost",
+  port = "${port}",
+  executable = {
+    command = "js-debug-adapter",
+    args = { "${port}" },
+  },
 }
 
 -- Standalone JavaScript/TypeScript debugging
 dap.configurations.javascript = {
   {
-    type = "node2",
+    type = "pwa-node",
     request = "launch",
     name = "Launch file",
     program = "${file}",
     cwd = vim.fn.getcwd(),
     sourceMaps = true,
     console = "integratedTerminal",
-    outputCapture = "std",
   },
   {
-    type = "node2",
+    type = "pwa-node",
     request = "launch",
     name = "Launch connectmeto",
-    runTimeArgs = { "--inspect" },
+    runtimeArgs = { "--inspect" },
     program = "${workspaceFolder}/server.js",
     console = "integratedTerminal",
-    outputCapture = "std",
   },
   {
-    type = "node2",
+    type = "pwa-node",
     request = "launch",
     name = "AVA Test File",
     program = "${workspaceFolder}/node_modules/ava/entrypoints/cli.mjs",
     cwd = vim.fn.getcwd(),
     sourceMaps = true,
     args = { "${file}", "--tap", "--serial" },
-    runTimeArgs = { "--inspect" },
+    runtimeArgs = { "--inspect" },
     console = "integratedTerminal",
   },
 }
 
 dap.configurations.typescript = {
   {
-    type = "tsx",
+    type = "pwa-node",
     request = "launch",
     name = "Launch file",
     program = "${file}",
@@ -57,7 +53,7 @@ dap.configurations.typescript = {
     sourceMaps = true,
     outFiles = { "${workspaceFolder}/.build/**/*.js" },
     console = "integratedTerminal",
-    outputCapture = "std",
+    runtimeExecutable = "tsx",
   },
 }
 

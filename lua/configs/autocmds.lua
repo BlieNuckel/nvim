@@ -41,10 +41,24 @@ autocmd("CursorHold", {
 
 autocmd("BufDelete", {
   callback = function()
-    local bufs = vim.t.bufs
-    if #bufs == 1 and vim.api.nvim_buf_get_name(bufs[1]) == "" then
-      vim.cmd "Nvdash"
-    end
+    vim.schedule(function()
+      -- Get only listed buffers (excludes hidden, unlisted buffers)
+      local bufs = vim.tbl_filter(function(buf)
+        return vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buflisted
+      end, vim.api.nvim_list_bufs())
+
+      -- If only one buffer left and it's empty (no name and no content), show Nvdash
+      if #bufs == 1 then
+        local buf = bufs[1]
+        local buf_name = vim.api.nvim_buf_get_name(buf)
+        local buf_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+        local is_empty = buf_name == "" and #buf_lines == 1 and buf_lines[1] == ""
+
+        if is_empty then
+          vim.cmd "Nvdash"
+        end
+      end
+    end)
   end,
 })
 
@@ -58,3 +72,4 @@ autocmd("BufWritePre", {
     end
   end,
 })
+

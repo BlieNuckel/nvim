@@ -22,7 +22,7 @@ M.term = {
 }
 M.ui = {
   tabufline = {
-    order = {},
+    enabled = false,
   },
   statusline = {
     order = { "mode", "f", "git", "%=", "lsp_msg", "%=", "diagnostics", "lsp", "cwd", "lineInfo" },

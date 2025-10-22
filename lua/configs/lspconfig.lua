@@ -1,5 +1,14 @@
-local servers =
-  { "csharp_ls", "ts_ls", "gopls", "html", "cssls", "elmls", "eslint", "kulala_ls", "pyright", "GitHub Copilot" }
+local servers = {
+  "csharp_ls",
+  "ts_ls",
+  "gopls",
+  "html",
+  "cssls",
+  "elmls",
+  "eslint",
+  "kulala_ls",
+  "pyright",
+}
 vim.lsp.enable(servers)
 
 vim.diagnostic.config {

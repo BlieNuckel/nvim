@@ -51,9 +51,9 @@ dap.configurations.typescript = {
     program = "${file}",
     cwd = vim.fn.getcwd(),
     sourceMaps = true,
-    outFiles = { "${workspaceFolder}/.build/**/*.js" },
     console = "integratedTerminal",
-    runtimeExecutable = "tsx",
+    runtimeExecutable = "node",
+    runtimeArgs = { "--import", "tsx", "${file}" },
   },
 }
 
@@ -75,3 +75,4 @@ vim.fn.sign_define(
 )
 vim.fn.sign_define("DapStopped", { text = "B", linehl = "DapStopped", numhl = "DapBreakpoint" })
 vim.fn.sign_define("DapLogPoint", { text = "B", texthl = "yellow", linehl = "DapBreakpoint", numhl = "DapBreakpoint" })
+

@@ -12,7 +12,12 @@ map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 map("n", "zR", ufo.openAllFolds)
 map("n", "zM", ufo.closeAllFolds)
-map("n", "<leader>fW", require("telescope.builtin").grep_string, { desc = "Find word under cursor" })
+
+-- Fzf lua keybindings
+map("n", "<leader>ff", "<CMD>FzfLua files<CR>", { desc = "Fzf Files" })
+map("n", "<leader>fw", "<CMD>FzfLua live_grep<CR>", { desc = "Fzf Live Grep" })
+map("n", "<leader>fb", "<CMD>FzfLua buffers<CR>", { desc = "Fzf Buffers" })
+map("n", "<leader>fo", "<CMD>FzfLua oldfiles<CR>", { desc = "Fzf Old Files" })
 
 -- Blamer toggle
 map("n", "<leader>bb", "<CMD>BlamerToggle<CR>", { desc = "Toggle Blamer" })

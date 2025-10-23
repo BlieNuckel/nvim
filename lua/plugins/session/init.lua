@@ -3,5 +3,8 @@ return {
   lazy = false,
   opts = {
     supressed_dirs = { "~/", "~/Downloads", "/" },
+    session_lens = {
+      picker = "fzf",
+    },
   },
 }

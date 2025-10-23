@@ -27,7 +27,6 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
-    "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
     "stevearc/dressing.nvim", -- for input provider dressing
     "folke/snacks.nvim", -- for input provider snacks
     "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons

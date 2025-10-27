@@ -7,6 +7,7 @@ local delmap = vim.keymap.del
 local ufo = require "ufo"
 local dap = require "dap"
 local dapui = require "dapui"
+local snacks = require "snacks"
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
@@ -14,11 +15,17 @@ map("n", "zR", ufo.openAllFolds)
 map("n", "zM", ufo.closeAllFolds)
 
 -- Fzf lua keybindings
-map("n", "<leader>ff", "<CMD>FzfLua files<CR>", { desc = "Fzf Files" })
-map("n", "<leader>fw", "<CMD>FzfLua live_grep<CR>", { desc = "Fzf Live Grep" })
-map("n", "<leader>fb", "<CMD>FzfLua buffers<CR>", { desc = "Fzf Buffers" })
-map("n", "<leader>fo", "<CMD>FzfLua oldfiles<CR>", { desc = "Fzf Old Files" })
-map("n", "<leader>fg", "<CMD>FzfLua git_status<CR>", { desc = "Fzf Git Files" })
+local pick = function(type)
+  return function()
+    snacks.picker.pick(type)
+  end
+end
+map("n", "<leader><space>", pick "smart", { desc = "Smart Find Files" })
+map("n", "<leader>ff", pick "files", { desc = "Find Files" })
+map("n", "<leader>fw", pick "grep", { desc = "Live Grep" })
+map("n", "<leader>fW", pick "grep_word", { desc = "Live Grep" })
+map("n", "<leader>fb", pick "buffers", { desc = "Find Buffers" })
+map("n", "<leader>fg", pick "git_status", { desc = "Find Git Changes" })
 delmap("n", "<leader>gt")
 
 -- Blamer toggle

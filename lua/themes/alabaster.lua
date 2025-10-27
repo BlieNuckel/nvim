@@ -1,3 +1,4 @@
+-- @type Base46Table
 local M = {}
 
 M.base_30 = {
@@ -75,14 +76,6 @@ M.polish_hl = {
     ["@number"] = tree_sitter_colors.string,
     ["@comment"] = tree_sitter_colors.comment,
     ["@comment.documentation"] = tree_sitter_colors.comment,
-  },
-
-  telescope = {
-    TelescopeMatching = {},
-  },
-
-  nvdash = {
-    NvDashAscii = {},
   },
 }
 

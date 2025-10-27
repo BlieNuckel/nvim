@@ -3,6 +3,7 @@ require "nvchad.mappings"
 -- add yours here
 
 local map = vim.keymap.set
+local delmap = vim.keymap.del
 local ufo = require "ufo"
 local dap = require "dap"
 local dapui = require "dapui"
@@ -17,6 +18,8 @@ map("n", "<leader>ff", "<CMD>FzfLua files<CR>", { desc = "Fzf Files" })
 map("n", "<leader>fw", "<CMD>FzfLua live_grep<CR>", { desc = "Fzf Live Grep" })
 map("n", "<leader>fb", "<CMD>FzfLua buffers<CR>", { desc = "Fzf Buffers" })
 map("n", "<leader>fo", "<CMD>FzfLua oldfiles<CR>", { desc = "Fzf Old Files" })
+map("n", "<leader>fg", "<CMD>FzfLua git_status<CR>", { desc = "Fzf Git Files" })
+delmap("n", "<leader>gt")
 
 -- Blamer toggle
 map("n", "<leader>bb", "<CMD>BlamerToggle<CR>", { desc = "Toggle Blamer" })

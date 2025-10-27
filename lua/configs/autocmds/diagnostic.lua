@@ -1,5 +1,3 @@
-local og_virt_text
-local og_virt_line
 vim.api.nvim_create_autocmd({ "CursorMoved", "DiagnosticChanged" }, {
   group = vim.api.nvim_create_augroup("diagnostic_virt_text_hide", {}),
   callback = function(ev)

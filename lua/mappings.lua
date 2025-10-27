@@ -3,7 +3,6 @@ require "nvchad.mappings"
 -- add yours here
 
 local map = vim.keymap.set
-local delmap = vim.keymap.del
 local ufo = require "ufo"
 local dap = require "dap"
 local dapui = require "dapui"
@@ -21,6 +20,10 @@ map("n", "<leader>fo", "<CMD>FzfLua oldfiles<CR>", { desc = "Fzf Old Files" })
 
 -- Blamer toggle
 map("n", "<leader>bb", "<CMD>BlamerToggle<CR>", { desc = "Toggle Blamer" })
+
+-- Leap keybindings
+vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap)")
+vim.keymap.set("n", "S", "<Plug>(leap-from-window)")
 
 -- Debugger keybindings
 map("n", "<leader>dc", dap.continue, { desc = "Debugger Start/Continue" })

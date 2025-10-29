@@ -77,6 +77,9 @@ M.polish_hl = {
     ["@comment"] = tree_sitter_colors.comment,
     ["@comment.documentation"] = tree_sitter_colors.comment,
   },
+  nvimtree = {
+    NvimTreeCursorLine = { bg = M.base_30.one_bg },
+  },
 }
 
 M.type = "light"

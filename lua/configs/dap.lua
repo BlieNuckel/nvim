@@ -26,8 +26,8 @@ dap.configurations.javascript = {
     type = "pwa-node",
     request = "launch",
     name = "Launch connectmeto",
-    runtimeArgs = { "--inspect" },
     program = "${workspaceFolder}/server.js",
+    cwd = "${workspaceFolder}",
     console = "integratedTerminal",
   },
   {

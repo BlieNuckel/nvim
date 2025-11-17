@@ -11,7 +11,6 @@ local function on_attach(bufnr)
   map("n", "h", nav.lefty, opts "Lefty")
   map("n", "l", nav.righty, opts "Righty")
   map("n", "H", api.tree.collapse_all, opts "Collapse All")
-  map("n", "<C-f>", nav.grep_in, opts "Grep in")
 end
 
 return {

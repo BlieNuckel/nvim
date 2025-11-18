@@ -20,8 +20,8 @@ local pick = function(type)
     snacks.picker.pick(type)
   end
 end
-map("n", "<leader><space>", pick "smart", { desc = "Smart Find Files" })
-map("n", "<leader>ff", pick "files", { desc = "Find Files" })
+map("n", "<leader><space>", pick "files", { desc = "Find Files" })
+map("n", "<leader>fs", pick "smart", { desc = "Smart Find Files" })
 map("n", "<leader>fw", pick "grep", { desc = "Live Grep" })
 map("n", "<leader>fW", pick "grep_word", { desc = "Live Grep" })
 map("n", "<leader>fb", pick "buffers", { desc = "Find Buffers" })

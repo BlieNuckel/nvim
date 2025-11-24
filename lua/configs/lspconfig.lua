@@ -1,5 +1,3 @@
-local lspconfig = require "lspconfig"
-
 local servers = {
   "csharp_ls",
   "ts_ls",
@@ -13,15 +11,13 @@ local servers = {
 }
 
 for _, server in ipairs(servers) do
-  local config = {}
-
   local config_path = vim.fn.stdpath "config" .. "/lsp/" .. server .. ".lua"
   if vim.fn.filereadable(config_path) == 1 then
-    config = dofile(config_path)
+    vim.lsp.config(server, dofile(config_path))
   end
-
-  lspconfig[server].setup(config)
 end
+
+vim.lsp.enable(servers)
 
 vim.diagnostic.config {
   virtual_text = true,

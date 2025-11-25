@@ -4,6 +4,7 @@ return {
 
     local elm_root_map = {
       ["/Users/lasse.poulsen/Documents/Repos/ui"] = "/Users/lasse.poulsen/Documents/Repos/ui/docs",
+      ["/Users/lasse.poulsen/Documents/Repos/connectmeto/elm/shared"] = "/Users/lasse.poulsen/Documents/Repos/connectmeto/elm/places",
     }
 
     for mapped_root, target_root in pairs(elm_root_map) do

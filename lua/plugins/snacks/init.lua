@@ -6,5 +6,6 @@ return {
     input = { enabled = true },
     scroll = { enabled = true },
     notifier = { enabled = true },
+    picker = { enabled = true },
   },
 }

@@ -8,6 +8,7 @@ local ufo = require "ufo"
 local dap = require "dap"
 local dapui = require "dapui"
 local snacks = require "snacks"
+local claude = require "claude"
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
@@ -58,8 +59,14 @@ map({ "n", "v" }, "<Leader>dh", function()
 end, { desc = "Debugger Hover" })
 
 -- Claude terminal
-map({ "n", "t" }, "<A-a>", "<CMD>ClaudeToggle<CR>", { desc = "Toggle Claude terminal" })
-map({ "n", "t" }, "<A-A>", "<CMD>ClaudeToggleFocus<CR>", { desc = "Toggle Claude focus" })
-map("v", "<leader>cs", "<CMD>ClaudeSendSelection<CR>", { desc = "Send selection to Claude" })
+map({ "n", "t" }, "<A-A>", claude.toggle, { desc = "Toggle Claude terminal" })
+map({ "n", "t" }, "<A-a>", claude.toggle_focus, { desc = "Toggle Claude focus" })
+map({ "n", "t" }, "<A-e>", claude.toggle_size, { desc = "Toggle Claude size" })
+map("v", "<leader>cs", claude.send_selection, { desc = "Send selection to Claude" })
 map("n", "<leader>cd", "<CMD>ClaudeSendDiagnostics file<CR>", { desc = "Send file diagnostics to Claude" })
 map("n", "<leader>cD", "<CMD>ClaudeSendDiagnostics line<CR>", { desc = "Send line diagnostic to Claude" })
+map({ "n", "t" }, "<A-n>", claude.worktree_picker, { desc = "New Claude instance" })
+map({ "n", "t" }, "<A-x>", claude.close, { desc = "Close Claude instance" })
+map({ "n", "t" }, "<A-]>", function() claude.cycle(1) end, { desc = "Next Claude instance" })
+map({ "n", "t" }, "<A-[>", function() claude.cycle(-1) end, { desc = "Previous Claude instance" })
+map("n", "<leader>cl", "<CMD>ClaudeList<CR>", { desc = "List Claude instances" })

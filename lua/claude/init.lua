@@ -1,100 +1,175 @@
+local state = require "claude.state"
+local attention = require "claude.attention"
+local instance = require "claude.instance"
+local window = require "claude.window"
+local send = require "claude.send"
+local worktree = require "claude.worktree"
+
 local M = {}
 
-local state = {
-  buf = nil,
-  last_code_win = nil,
-  was_insert_mode = false,
-}
+function M.new(opts)
+  opts = type(opts) == "string" and { name = opts } or opts or {}
+  local inst = {
+    id = state.next_id,
+    buf = nil,
+    name = opts.name or ("claude-" .. state.next_id),
+    expanded = false,
+    cwd = opts.cwd,
+  }
+  state.instances[state.next_id] = inst
+  state.next_id = state.next_id + 1
 
-local function get_win_for_buf(bufnr)
-  if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then
-    return nil
+  window.save_code_win()
+  state.active_id = inst.id
+  window.show_instance(inst)
+
+  if state.was_insert_mode then
+    vim.cmd "startinsert"
   end
-  for _, win in ipairs(vim.api.nvim_list_wins()) do
-    if vim.api.nvim_win_get_buf(win) == bufnr then
-      return win
+
+  return inst.id
+end
+
+function M.close(id)
+  local inst = instance.get(id)
+  if not inst then
+    return
+  end
+
+  local was_active = state.active_id == inst.id
+  attention.clear(inst.id)
+
+  if was_active then
+    local fallback = instance.get_fallback_id(inst.id)
+    state.instances[inst.id] = nil
+    state.active_id = fallback
+    if state.active_id and window.get_sidebar_win() then
+      window.show_instance(state.instances[state.active_id])
+    elseif not state.active_id then
+      window.close_sidebar()
+    end
+  else
+    state.instances[inst.id] = nil
+  end
+
+  if instance.buf_is_valid(inst) then
+    vim.api.nvim_buf_delete(inst.buf, { force = true })
+  end
+  window.update_winbar()
+end
+
+function M.get_count()
+  local count = 0
+  for _ in pairs(state.instances) do
+    count = count + 1
+  end
+  return count
+end
+
+function M.list()
+  local result = {}
+  for id, inst in pairs(state.instances) do
+    table.insert(result, {
+      id = id,
+      name = inst.name,
+      is_active = id == state.active_id,
+      needs_attention = attention.needs_attention(id),
+    })
+  end
+  table.sort(result, function(a, b)
+    return a.id < b.id
+  end)
+  return result
+end
+
+function M.select(id)
+  if not state.instances[id] then
+    return false
+  end
+  state.active_id = id
+  if window.get_sidebar_win() then
+    window.show_instance(state.instances[id])
+  end
+  return true
+end
+
+function M.cycle(direction)
+  local ids = instance.get_sorted_ids()
+
+  if #ids == 0 then
+    return
+  end
+  if #ids == 1 then
+    state.active_id = ids[1]
+    window.update_winbar()
+    return
+  end
+
+  local current_idx = 1
+  for i, id in ipairs(ids) do
+    if id == state.active_id then
+      current_idx = i
+      break
     end
   end
-  return nil
+
+  if direction > 0 then
+    state.active_id = ids[current_idx % #ids + 1]
+  else
+    state.active_id = ids[(current_idx - 2) % #ids + 1]
+  end
+
+  if window.get_sidebar_win() then
+    window.show_instance(state.instances[state.active_id])
+  end
 end
 
 function M.is_open()
-  return get_win_for_buf(state.buf) ~= nil
+  return window.get_sidebar_win() ~= nil
 end
 
 function M.is_focused()
-  local win = get_win_for_buf(state.buf)
+  local win = window.get_sidebar_win()
   return win and vim.api.nvim_get_current_win() == win
 end
 
-local function save_code_win()
-  local current_win = vim.api.nvim_get_current_win()
-  local current_buf = vim.api.nvim_win_get_buf(current_win)
-  if current_buf ~= state.buf then
-    state.last_code_win = current_win
-  end
-end
-
-local function open_terminal()
-  local term = require "nvchad.term"
-  local win_ratios = {}
-  local total = vim.o.columns
-
-  for _, win in ipairs(vim.api.nvim_list_wins()) do
-    win_ratios[win] = vim.api.nvim_win_get_width(win) / total
-  end
-
-  term.toggle {
-    pos = "vsp",
-    id = "claudeTerm",
-    cmd = "claude",
-    size = 0.25,
-    winopts = { winfixwidth = true },
-  }
-
-  vim.cmd "wincmd L"
-  local term_win = vim.api.nvim_get_current_win()
-  local term_width = math.floor(total * 0.25)
-  local remaining = total - term_width
-
-  vim.api.nvim_win_set_width(term_win, term_width)
-  for win, ratio in pairs(win_ratios) do
-    if vim.api.nvim_win_is_valid(win) then
-      vim.api.nvim_win_set_width(win, math.floor(remaining * ratio))
-    end
-  end
-
-  state.buf = vim.api.nvim_win_get_buf(term_win)
-end
-
-local function close_terminal()
-  local term = require "nvchad.term"
-  term.toggle {
-    pos = "vsp",
-    id = "claudeTerm",
-    cmd = "claude",
-    size = 0.25,
-  }
-end
-
 function M.toggle()
-  local was_open = M.is_open()
-  if was_open then
-    save_code_win()
-    close_terminal()
-  else
-    save_code_win()
-    open_terminal()
-  end
-end
+  local inst = instance.get_active()
 
-function M.focus()
-  save_code_win()
-  if not M.is_open() then
-    open_terminal()
+  if not inst then
+    M.new()
     return
   end
-  local win = get_win_for_buf(state.buf)
+
+  if window.get_sidebar_win() then
+    state.was_insert_mode = M.is_focused() and vim.fn.mode() == "t"
+    window.save_code_win()
+    window.close_sidebar()
+  else
+    window.save_code_win()
+    window.show_instance(inst)
+    if state.was_insert_mode then
+      vim.cmd "startinsert"
+    end
+  end
+end
+
+function M.toggle_all()
+  M.toggle()
+end
+
+function M.focus(id)
+  local inst = instance.get(id)
+  if not inst then
+    M.new()
+    return
+  end
+
+  window.save_code_win()
+  state.active_id = inst.id
+  window.show_instance(inst)
+
+  local win = window.get_sidebar_win()
   if win then
     vim.api.nvim_set_current_win(win)
   end
@@ -119,105 +194,63 @@ function M.toggle_focus()
   end
 end
 
-local function send_to_claude(text)
-  if not state.buf or not vim.api.nvim_buf_is_valid(state.buf) then
-    vim.notify("Claude terminal not open", vim.log.levels.WARN)
-    return false
+function M.toggle_size()
+  local inst = instance.get_active()
+  if not inst then
+    return
   end
-  local chan = vim.b[state.buf].terminal_job_id
-  if not chan then
-    vim.notify("Claude terminal channel not found", vim.log.levels.WARN)
-    return false
-  end
-  vim.api.nvim_chan_send(chan, text)
-  return true
+
+  inst.expanded = not inst.expanded
+  window.resize()
 end
 
-function M.send_selection()
-  local mode = vim.fn.mode()
-  if mode ~= "v" and mode ~= "V" and mode ~= "\22" then
-    vim.notify("No visual selection", vim.log.levels.WARN)
-    return
-  end
+function M.send_selection(target_id)
+  send.selection(target_id, {
+    create_new = function()
+      M.new()
+    end,
+    is_open = M.is_open,
+    focus = M.focus,
+  })
+end
 
-  local start_pos = vim.fn.getpos "v"
-  local end_pos = vim.fn.getpos "."
-  local start_line, start_col = start_pos[2], start_pos[3]
-  local end_line, end_col = end_pos[2], end_pos[3]
-
-  if start_line > end_line or (start_line == end_line and start_col > end_col) then
-    start_line, end_line = end_line, start_line
-    start_col, end_col = end_col, start_col
-  end
-
-  local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
-  if #lines == 0 then
-    return
-  end
-
-  if mode == "v" then
-    if #lines == 1 then
-      lines[1] = lines[1]:sub(start_col, end_col)
-    else
-      lines[1] = lines[1]:sub(start_col)
-      lines[#lines] = lines[#lines]:sub(1, end_col)
-    end
-  end
-
-  local text = table.concat(lines, "\n")
-  local file = vim.fn.expand "%:."
-  local formatted = string.format("From %s (lines %d-%d):\n```\n%s\n```", file, start_line, end_line, text)
-
-  vim.cmd "normal! \27"
-  if not M.is_open() then
-    open_terminal()
-  end
-  M.focus()
-  vim.cmd "startinsert"
-  send_to_claude(formatted)
+function M.send_diagnostics(scope, target_id)
+  send.diagnostics(scope, target_id, {
+    create_new = function()
+      M.new()
+    end,
+    is_open = M.is_open,
+    focus = M.focus,
+  })
 end
 
 function M.cleanup()
-  if state.buf and vim.api.nvim_buf_is_valid(state.buf) then
-    vim.api.nvim_buf_delete(state.buf, { force = true })
+  window.close_sidebar()
+  for id, inst in pairs(state.instances) do
+    attention.clear(id)
+    if instance.buf_is_valid(inst) then
+      vim.api.nvim_buf_delete(inst.buf, { force = true })
+    end
+    state.instances[id] = nil
   end
-  state.buf = nil
+  state.active_id = nil
 end
 
-function M.send_diagnostics(scope)
-  local bufnr = vim.api.nvim_get_current_buf()
-  local file = vim.fn.expand "%:."
-  local diagnostics
+function M.get_active_id()
+  return state.active_id
+end
 
-  if scope == "line" then
-    local line = vim.api.nvim_win_get_cursor(0)[1] - 1
-    diagnostics = vim.diagnostic.get(bufnr, { lnum = line })
-  else
-    diagnostics = vim.diagnostic.get(bufnr)
-  end
+function M.get_active_name()
+  local inst = instance.get_active()
+  return inst and inst.name or nil
+end
 
-  if #diagnostics == 0 then
-    local msg = scope == "line" and "No diagnostics on current line" or "No diagnostics in current file"
-    vim.notify(msg, vim.log.levels.INFO)
-    return
-  end
+function M.worktree_picker()
+  worktree.picker(M.new)
+end
 
-  local severity_names = { "ERROR", "WARN", "INFO", "HINT" }
-  local lines = { string.format("Diagnostics from %s:", file) }
-
-  for _, d in ipairs(diagnostics) do
-    local sev = severity_names[d.severity] or "UNKNOWN"
-    table.insert(lines, string.format("  Line %d: [%s] %s", d.lnum + 1, sev, d.message))
-  end
-
-  local text = table.concat(lines, "\n") .. "\n"
-
-  if not M.is_open() then
-    open_terminal()
-  end
-  M.focus()
-  vim.cmd "startinsert"
-  send_to_claude(text)
+function M.create_worktree()
+  worktree.create(M.new)
 end
 
 return M

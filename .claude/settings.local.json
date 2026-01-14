@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git push:*)",
+      "Bash(git -C /Users/lasse.poulsen/.config/nvim diff lua/claude/init.lua)",
+      "Bash(git -C /Users/lasse.poulsen/.config/nvim show c6a71a0:lua/claude/init.lua)",
+      "Bash(gh issue list:*)",
+      "Bash(luac:*)"
+    ]
+  }
+}

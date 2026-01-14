@@ -36,5 +36,27 @@ usercmd("Format", function(args)
 end, { range = true })
 
 usercmd("ClaudeToggle", function()
-  require("configs.claude_term").toggle()
+  require("claude").toggle()
 end, {})
+
+usercmd("ClaudeFocus", function()
+  require("claude").focus()
+end, {})
+
+usercmd("ClaudeReturn", function()
+  require("claude").return_to_code()
+end, {})
+
+usercmd("ClaudeToggleFocus", function()
+  require("claude").toggle_focus()
+end, {})
+
+usercmd("ClaudeSendSelection", function()
+  require("claude").send_selection()
+end, {})
+
+usercmd("ClaudeSendDiagnostics", function(args)
+  require("claude").send_diagnostics(args.args == "line" and "line" or "file")
+end, { nargs = "?", complete = function()
+  return { "file", "line" }
+end })

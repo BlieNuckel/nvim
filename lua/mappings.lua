@@ -57,5 +57,9 @@ map({ "n", "v" }, "<Leader>dh", function()
   require("dap.ui.widgets").hover()
 end, { desc = "Debugger Hover" })
 
--- Claude terminal toggle
+-- Claude terminal
 map({ "n", "t" }, "<A-a>", "<CMD>ClaudeToggle<CR>", { desc = "Toggle Claude terminal" })
+map({ "n", "t" }, "<A-A>", "<CMD>ClaudeToggleFocus<CR>", { desc = "Toggle Claude focus" })
+map("v", "<leader>cs", "<CMD>ClaudeSendSelection<CR>", { desc = "Send selection to Claude" })
+map("n", "<leader>cd", "<CMD>ClaudeSendDiagnostics file<CR>", { desc = "Send file diagnostics to Claude" })
+map("n", "<leader>cD", "<CMD>ClaudeSendDiagnostics line<CR>", { desc = "Send line diagnostic to Claude" })

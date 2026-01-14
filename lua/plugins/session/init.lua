@@ -6,5 +6,10 @@ return {
     session_lens = {
       picker = "fzf",
     },
+    pre_save_cmds = {
+      function()
+        require("claude").cleanup()
+      end,
+    },
   },
 }

@@ -1,12 +1,25 @@
 local usercmd = vim.api.nvim_create_user_command
 
 usercmd("BufCloseAll", function()
-  vim.cmd "%bd!"
-  vim.cmd "NvimTreeOpen"
+  vim.cmd "NvimTreeClose"
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buftype ~= "terminal" then
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end
+  vim.schedule(function()
+    vim.wo.winfixwidth = false
+  end)
 end, {})
 
 usercmd("BufCloseOthers", function()
-  vim.cmd "%bd!|e#"
+  vim.cmd "NvimTreeClose"
+  local current = vim.api.nvim_get_current_buf()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if buf ~= current and vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buftype ~= "terminal" then
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end
   vim.cmd "NvimTreeOpen"
 end, {})
 
@@ -21,3 +34,7 @@ usercmd("Format", function(args)
   end
   require("conform").format { async = true, lsp_format = "fallback", range = range }
 end, { range = true })
+
+usercmd("ClaudeToggle", function()
+  require("configs.claude_term").toggle()
+end, {})

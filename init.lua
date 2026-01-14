@@ -30,6 +30,7 @@ dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
 
 require "options"
+vim.t.bufs = vim.t.bufs or {}
 require "nvchad.autocmds"
 require "configs.autocmds"
 require "configs.usercmds"

@@ -56,3 +56,6 @@ end, { desc = "Debugger REPL" })
 map({ "n", "v" }, "<Leader>dh", function()
   require("dap.ui.widgets").hover()
 end, { desc = "Debugger Hover" })
+
+-- Claude terminal toggle
+map({ "n", "t" }, "<A-a>", "<CMD>ClaudeToggle<CR>", { desc = "Toggle Claude terminal" })

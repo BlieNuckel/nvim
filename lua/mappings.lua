@@ -59,8 +59,8 @@ map({ "n", "v" }, "<Leader>dh", function()
 end, { desc = "Debugger Hover" })
 
 -- Claude terminal
-map({ "n", "t" }, "<A-a>", claude.toggle, { desc = "Toggle Claude terminal" })
-map({ "n", "t" }, "<A-A>", claude.toggle_focus, { desc = "Toggle Claude focus" })
+map({ "n", "t" }, "<A-s>", claude.toggle, { desc = "Toggle Claude terminal" })
+map({ "n", "t" }, "<A-c>", claude.toggle_focus, { desc = "Toggle Claude focus" })
 map({ "n", "t" }, "<A-e>", claude.toggle_size, { desc = "Toggle Claude size" })
 map("v", "<leader>cs", claude.send_selection, { desc = "Send selection to Claude" })
 map("n", "<leader>cd", "<CMD>ClaudeSendDiagnostics file<CR>", { desc = "Send file diagnostics to Claude" })

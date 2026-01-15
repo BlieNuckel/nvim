@@ -75,4 +75,3 @@ vim.fn.sign_define(
 )
 vim.fn.sign_define("DapStopped", { text = "B", linehl = "DapStopped", numhl = "DapBreakpoint" })
 vim.fn.sign_define("DapLogPoint", { text = "B", texthl = "yellow", linehl = "DapBreakpoint", numhl = "DapBreakpoint" })
-

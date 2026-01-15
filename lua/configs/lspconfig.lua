@@ -8,7 +8,7 @@ local servers = {
   "eslint",
   "kulala_ls",
   "pyright",
-  "elixir-ls",
+  "elixirls",
 }
 
 for _, server in ipairs(servers) do

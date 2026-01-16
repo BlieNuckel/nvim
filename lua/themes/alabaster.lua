@@ -58,26 +58,91 @@ M.base_16 = {
   base0F = M.base_30.deep_black,
 }
 
-local tree_sitter_colors = {
+local hl = {
   const = { fg = "#6E3DC2", bg = "#F1ECF9" },
-  func = { fg = "#2597F3", bg = "#E7F4FE" },
   string = { fg = "#59B55D", bg = "#EDF7ED" },
   comment = { fg = "#AD8D00", bg = "#FFFAE5" },
+  type = { fg = "#007676", bg = "#E5F5F5" },
+  keyword = { fg = "#7a7a7a" },
+  definition = { fg = "#325CC0", bg = "#E8EEF9" },
+  attribute = { fg = "#E65100", bg = "#FFF3E0" },
 }
 
 M.polish_hl = {
   treesitter = {
-    ["@constant.builtin"] = tree_sitter_colors.const,
-    ["@constant.macro"] = tree_sitter_colors.const,
-    ["@function"] = tree_sitter_colors.func,
-    ["@property.yaml"] = { fg = M.base_30.deep_black, bg = nil },
-    ["@string"] = tree_sitter_colors.string,
-    ["@string.regex"] = tree_sitter_colors.string,
-    ["@string.escape"] = tree_sitter_colors.string,
-    ["@number"] = tree_sitter_colors.string,
-    ["@comment"] = tree_sitter_colors.comment,
-    ["@comment.documentation"] = tree_sitter_colors.comment,
+    -- Constants
+    ["@constant"] = hl.const,
+    ["@constant.builtin"] = hl.const,
+    ["@constant.macro"] = hl.const,
+    ["@boolean"] = hl.const,
+
+    -- Strings and literals
+    ["@string"] = hl.string,
+    ["@string.regexp"] = hl.string,
+    ["@string.escape"] = hl.string,
+    ["@string.special"] = hl.string,
+    ["@character"] = hl.string,
+    ["@number"] = hl.string,
+    ["@number.float"] = hl.string,
+
+    -- Definitions (via custom TreeSitter queries)
+    ["@type.definition"] = hl.type,
+    ["@function.definition"] = hl.definition,
+    ["@variable.definition"] = hl.definition,
+
+    -- Keywords (lighter gray to reduce visual weight)
+    ["@keyword"] = hl.keyword,
+    ["@keyword.function"] = hl.keyword,
+    ["@keyword.operator"] = hl.keyword,
+    ["@keyword.return"] = hl.keyword,
+    ["@keyword.conditional"] = hl.keyword,
+    ["@keyword.repeat"] = hl.keyword,
+    ["@keyword.import"] = hl.keyword,
+    ["@keyword.exception"] = hl.keyword,
+
+    -- Attributes/decorators
+    ["@attribute"] = hl.attribute,
+    ["@attribute.builtin"] = hl.attribute,
+
+    -- Comments
+    ["@comment"] = hl.comment,
+    ["@comment.documentation"] = hl.comment,
+    ["@comment.todo"] = { fg = "#E65100", bg = "#FFF3E0", bold = true },
+    ["@comment.note"] = { fg = "#2597F3", bg = "#E7F4FE", bold = true },
+    ["@comment.warning"] = { fg = "#AD8D00", bg = "#FFFAE5", bold = true },
+    ["@comment.error"] = { fg = "#C62828", bg = "#FFEBEE", bold = true },
+
+    -- Keep YAML properties plain
+    ["@property.yaml"] = { fg = M.base_30.deep_black },
   },
+
+  lsp = {
+    -- LSP semantic token modifiers for definitions (the key feature!)
+    ["@lsp.mod.declaration"] = hl.definition,
+    ["@lsp.mod.definition"] = hl.definition,
+
+    -- Function/method definitions
+    ["@lsp.typemod.function.declaration"] = hl.definition,
+    ["@lsp.typemod.function.definition"] = hl.definition,
+    ["@lsp.typemod.method.declaration"] = hl.definition,
+    ["@lsp.typemod.method.definition"] = hl.definition,
+
+    -- Type definitions (teal)
+    ["@lsp.typemod.type.declaration"] = hl.type,
+    ["@lsp.typemod.class.declaration"] = hl.type,
+    ["@lsp.typemod.struct.declaration"] = hl.type,
+    ["@lsp.typemod.interface.declaration"] = hl.type,
+    ["@lsp.typemod.enum.declaration"] = hl.type,
+
+    -- Variable/parameter definitions
+    ["@lsp.typemod.variable.declaration"] = hl.definition,
+    ["@lsp.typemod.parameter.declaration"] = hl.definition,
+
+    -- Readonly/static modifiers (subtle italic)
+    ["@lsp.mod.readonly"] = { italic = true },
+    ["@lsp.mod.static"] = { italic = true },
+  },
+
   nvimtree = {
     NvimTreeCursorLine = { bg = M.base_30.one_bg },
   },

@@ -12,6 +12,7 @@ local claude = require "claude"
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
+map("t", "jk", "<C-\\><C-n>")
 map("n", "zR", ufo.openAllFolds)
 map("n", "zM", ufo.closeAllFolds)
 

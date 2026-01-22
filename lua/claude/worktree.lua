@@ -23,11 +23,15 @@ function M.picker(create_instance)
     table.insert(worktrees, current)
   end
 
+  table.insert(worktrees, 1, { none = true })
   table.insert(worktrees, { new = true })
 
   require("snacks").picker.select(worktrees, {
     prompt = "Worktree",
     format_item = function(item)
+      if item.none then
+        return "None (current directory)"
+      end
       if item.new then
         return "+ Create new worktree..."
       end
@@ -37,7 +41,9 @@ function M.picker(create_instance)
     if not choice then
       return
     end
-    if choice.new then
+    if choice.none then
+      create_instance {}
+    elseif choice.new then
       M.create(create_instance)
     else
       create_instance { name = choice.branch or "detached", cwd = choice.path }

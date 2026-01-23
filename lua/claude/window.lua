@@ -113,6 +113,11 @@ function M.show_instance(inst)
     local id = inst.id
     vim.api.nvim_win_call(win, function()
       vim.fn.termopen("claude", {
+        on_stdout = function()
+          if vim.bo[buf].filetype ~= "claude-terminal" then
+            vim.bo[buf].filetype = "claude-terminal"
+          end
+        end,
         cwd = inst.cwd,
         env = { CLAUDE_NVIM_ID = tostring(id) },
         on_exit = function()

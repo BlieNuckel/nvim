@@ -10,6 +10,7 @@ local options = {
     yaml = { "prettier" },
     http = { "kulala-fmt" },
     python = { "black" },
+    elixir = { "mix" },
   },
   linters_by_ft = {
     javascript = { "eslint" },

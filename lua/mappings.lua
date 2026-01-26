@@ -35,6 +35,7 @@ map("n", "<leader>fW", pick "grep_word", { desc = "Live Grep" })
 map("n", "<leader>fb", pick "buffers", { desc = "Find Buffers" })
 map("n", "<leader>fg", pick "git_status", { desc = "Find Git Changes" })
 map("n", "<leader>fr", pick "recent", { desc = "Find Recent" })
+map("n", "<leader>fc", pick "resume", { desc = "Resume Picker" })
 map("n", "<leader>lg", snacks.lazygit.open, { desc = "Open Lazygit" })
 
 -- Delete default telescope keybindings

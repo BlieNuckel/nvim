@@ -224,6 +224,10 @@ function M.send_diagnostics(scope, target_id)
   })
 end
 
+function M.send_alternate_path()
+  send.alternate_path_inline()
+end
+
 function M.cleanup()
   window.close_sidebar()
   for id, inst in pairs(state.instances) do

@@ -75,6 +75,22 @@ function M.selection(target_id, callbacks)
   end
 end
 
+function M.alternate_path_inline()
+  local alt_path = vim.fn.expand "#:."
+  if alt_path == "" or alt_path == "#" then
+    vim.notify("No alternate file", vim.log.levels.WARN)
+    return
+  end
+
+  local inst = instance.get_active()
+  if not inst then
+    vim.notify("No active Claude instance", vim.log.levels.WARN)
+    return
+  end
+
+  M.to_instance(inst.id, alt_path)
+end
+
 function M.diagnostics(scope, target_id, callbacks)
   local bufnr = vim.api.nvim_get_current_buf()
   local file = vim.fn.expand "%:."

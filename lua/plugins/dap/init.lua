@@ -6,15 +6,9 @@ return {
     "nvim-neotest/nvim-nio",
   },
   config = function()
-    -- Require basic DAP configuration
-    local dap = require "dap"
-    local dapui = require "dapui"
-
-    -- Setup DAP UI
-    dapui.setup()
-
-    dap.listeners.after.event_initialized["dapui_config"] = function()
-      dapui.open()
-    end
+    require "plugins.dap.adapters"
+    require "plugins.dap.configurations"
+    require "plugins.dap.ui"
+    require "plugins.dap.copy"
   end,
 }

@@ -27,16 +27,3 @@ vim.fn.sign_define(
 vim.fn.sign_define("DapStopped", { text = "B", linehl = "DapStopped", numhl = "DapBreakpoint" })
 vim.fn.sign_define("DapLogPoint", { text = "B", texthl = "yellow", linehl = "DapBreakpoint", numhl = "DapBreakpoint" })
 
--- Override K keymap during debug session
-dap.listeners.after.event_initialized["override_K"] = function()
-  vim.keymap.set({ "n", "v" }, "K", function()
-    require("dap.ui.widgets").hover()
-  end, { desc = "DAP Hover" })
-end
-
-local function restore_K()
-  vim.keymap.del({ "n", "v" }, "K")
-end
-
-dap.listeners.before.event_terminated["restore_K"] = restore_K
-dap.listeners.before.event_exited["restore_K"] = restore_K

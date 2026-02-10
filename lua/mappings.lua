@@ -50,7 +50,11 @@ vim.keymap.set("n", "S", "<Plug>(leap-from-window)")
 
 -- Debugger keybindings
 map("n", "<leader>dc", dap.continue, { desc = "Debugger Start/Continue" })
-map("n", "<leader>dd", dap.terminate, { desc = "Debugger Stop" })
+map("n", "<leader>dd", function()
+  dap.terminate({}, { terminateDebuggee = true }, function()
+    dap.close()
+  end)
+end, { desc = "Debugger Stop" })
 map("n", "<leader>do", dap.step_over, { desc = "Debugger Step Over" })
 map("n", "<leader>di", dap.step_into, { desc = "Debugger Step Into" })
 map("n", "<leader>du", dap.step_out, { desc = "Debugger Step Out" })

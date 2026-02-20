@@ -11,6 +11,7 @@ local options = {
     http = { "kulala-fmt" },
     python = { "black" },
     elixir = { "mix" },
+    elm = { "elm_format" },
   },
   linters_by_ft = {
     javascript = { "eslint" },

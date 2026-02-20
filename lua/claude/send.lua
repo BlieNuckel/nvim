@@ -54,6 +54,23 @@ function M.selection(target_id, callbacks)
   local file = vim.fn.expand "%:."
   local formatted = string.format("From %s (lines %d-%d):\n```\n%s\n```", file, start_line, end_line, text)
 
+  local bufnr = vim.api.nvim_get_current_buf()
+  local diags = {}
+  for line = start_line - 1, end_line - 1 do
+    for _, d in ipairs(vim.diagnostic.get(bufnr, { lnum = line })) do
+      table.insert(diags, d)
+    end
+  end
+  if #diags > 0 then
+    local severity_names = { "ERROR", "WARN", "INFO", "HINT" }
+    local diag_lines = { "\nDiagnostics:" }
+    for _, d in ipairs(diags) do
+      local sev = severity_names[d.severity] or "UNKNOWN"
+      table.insert(diag_lines, string.format("  Line %d: [%s] %s", d.lnum + 1, sev, d.message))
+    end
+    formatted = formatted .. table.concat(diag_lines, "\n")
+  end
+
   vim.cmd "normal! \27"
 
   local inst = instance.get(target_id)
